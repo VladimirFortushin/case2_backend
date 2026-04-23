@@ -1,5 +1,11 @@
 package ru.mephi.case2.db.entity;
 
-public class Platform {
-    private String apiUrl;
+public enum Platform {
+
+    YOUTUBE,
+    RUTUBE,
+    VIMEO,
+    UNKNOWN
+
+
 }
