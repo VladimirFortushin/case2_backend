@@ -12,9 +12,9 @@ public class HttpApiClient implements Http {
     private static final HttpClient httpClient = HttpClient.newHttpClient();
 
     @Override
-    public String doGet(String url, Map<String, String> headers, Map<String, String> queryParams) {
+    public String doGet(String apiUrl, Map<String, String> headers, Map<String, String> queryParams) {
         try {
-            String fullUrl = url + buildQueryString(queryParams);
+            String fullUrl = apiUrl + buildQueryString(queryParams);
 
             HttpRequest.Builder builder = HttpRequest.newBuilder()
                     .uri(URI.create(fullUrl))
@@ -35,10 +35,10 @@ public class HttpApiClient implements Http {
     }
 
     @Override
-    public String doPost(String url, Map<String, String> headers, String body) {
+    public String doPost(String apiUrl, Map<String, String> headers, String body) {
         try {
             HttpRequest.Builder builder = HttpRequest.newBuilder()
-                    .uri(URI.create(url))
+                    .uri(URI.create(apiUrl))
                     .POST(HttpRequest.BodyPublishers.ofString(body));
 
             headers.forEach(builder::header);

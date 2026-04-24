@@ -8,6 +8,7 @@ import java.util.Map;
 public class JsonUtil {
 
     private static final Gson gson = new Gson();
+    private static final String jsonParserErr = "[Json parser] ERROR: ";
 
     public static String getFieldValue(String json, String key) {
         JsonElement element = JsonParser.parseString(json);
@@ -18,7 +19,7 @@ public class JsonUtil {
         try{
             return gson.fromJson(json, cls);
         }catch (JsonSyntaxException e){
-            BackendLogger.log("Couldn't parse json into class " + cls.getName() + "\n" + json);
+            BackendLogger.log(jsonParserErr + "Couldn't parse json into class " + cls.getName() + "\n" + json);
         }
         return null;
     }

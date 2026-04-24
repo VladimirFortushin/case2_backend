@@ -3,8 +3,10 @@ package ru.mephi.case2.scheduler;
 import ru.mephi.case2.api.ApiUpdateListener;
 import ru.mephi.case2.db.DbVideoRepository;
 import ru.mephi.case2.db.entity.Platform;
+import ru.mephi.case2.db.entity.UrlInfo;
 import ru.mephi.case2.log.BackendLogger;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
@@ -26,12 +28,16 @@ public class DbQueryScheduler {
 
     public void start() {
         scheduler.scheduleAtFixedRate(() -> {
-            BackendLogger.log("[Scheduler] fetching urls...");
-            Map<String, Platform> urls = videoRepository.getUrlsWithPlatforms();
-            if (!urls.isEmpty()) {
-                listener.triggerApiClientAction(urls);
-            } else {
-                BackendLogger.log("[Scheduler] nothing to fetch");
+            try {
+                BackendLogger.log("[Scheduler] fetching urls...");
+                List<UrlInfo> urlInfos = videoRepository.getUrlsWithPlatforms();
+                if (!urlInfos.isEmpty()) {
+                    listener.triggerUpdateAndSave(urlInfos);
+                } else {
+                    BackendLogger.log("[Scheduler] nothing to fetch");
+                }
+            } catch (Exception e) {
+                BackendLogger.log("[Scheduler] ERROR: " + e.getMessage());
             }
         }, 0, 2, TimeUnit.MINUTES);
     }

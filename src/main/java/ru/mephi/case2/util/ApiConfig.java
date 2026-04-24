@@ -5,9 +5,6 @@ import ru.mephi.case2.db.entity.Platform;
 import java.util.Properties;
 
 import java.io.InputStream;
-import java.util.Properties;
-
-import static ru.mephi.case2.db.entity.Platform.*;
 
 public class ApiConfig {
 
@@ -25,11 +22,20 @@ public class ApiConfig {
         }
     }
 
-    public static String getUrl(Platform platform) {
+    public static String getApiUrl(Platform platform) {
         return switch (platform) {
             case YOUTUBE -> props.getProperty("api.youtube.url");
             case RUTUBE -> props.getProperty("api.rutube.url");
             case VIMEO -> props.getProperty("api.vimeo.url");
+            default -> throw new IllegalArgumentException("Unknown platform");
+        };
+    }
+
+    public static String getApiToken(Platform platform) {
+        return switch (platform) {
+            case YOUTUBE -> props.getProperty("api.youtube.token");
+            case RUTUBE -> props.getProperty("api.rutube.token");
+            case VIMEO -> props.getProperty("api.vimeo.token");
             default -> throw new IllegalArgumentException("Unknown platform");
         };
     }

@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface VideoPlatformClient {
     Platform getPlatform();
-    void updateStats(List<String> urls);
+    void updateViewsStats(List<String> urls);
 }

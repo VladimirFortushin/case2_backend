@@ -22,14 +22,17 @@ public class Main {
         //создание апи клиентов
         Http httpClient = HttpApiClient.getInstance();
 
-        String ytApiUrl = ApiConfig.getUrl(Platform.YOUTUBE);
-        VideoPlatformClient youTubeApiClient = new YouTubeApiClient(httpClient, ytApiUrl);
+        String ytApiUrl = ApiConfig.getApiUrl(Platform.YOUTUBE);
+        String ytToken = ApiConfig.getApiToken(Platform.YOUTUBE);
+        VideoPlatformClient youTubeApiClient = new YouTubeApiClient(httpClient, ytApiUrl, ytToken);
 
-        String rtApiUrl = ApiConfig.getUrl(Platform.RUTUBE);
-        VideoPlatformClient ruTubeApiClient = new RutubeApiClient(httpClient, rtApiUrl);
+        String rtApiUrl = ApiConfig.getApiUrl(Platform.RUTUBE);
+        String rtToken = ApiConfig.getApiToken(Platform.RUTUBE);
+        VideoPlatformClient ruTubeApiClient = new RutubeApiClient(httpClient, rtApiUrl, rtToken);
 
-        String vimApiUrl = ApiConfig.getUrl(Platform.VIMEO);
-        VideoPlatformClient vimeoApiClient = new VimeoApiClient(httpClient, vimApiUrl);
+        String vimApiUrl = ApiConfig.getApiUrl(Platform.VIMEO);
+        String vimToken = ApiConfig.getApiToken(Platform.VIMEO);
+        VideoPlatformClient vimeoApiClient = new VimeoApiClient(httpClient, vimApiUrl, vimToken);
         // регистрация и запуск расписания запроса урлов
         DbQueryScheduler scheduler = getDbQueryScheduler(youTubeApiClient, ruTubeApiClient, vimeoApiClient);
 
@@ -40,10 +43,11 @@ public class Main {
         List<VideoPlatformClient> clients = Arrays.asList(youTubeApiClient, ruTubeApiClient, vimeoApiClient);
         // регистрация апи клиентов
         ApiClientRegistry registry = new ApiClientRegistry(clients);
-        // инициализация слушателя
-        ApiUpdateListener listener = new ApiUpdateListener(registry);
         // репо, достающий из БД урлы видео
         DbVideoRepository repository = new DbVideoRepository();
+        // инициализация слушателя
+        ApiUpdateListener listener = new ApiUpdateListener(registry, repository);
+
 
         return new DbQueryScheduler(repository, listener);
     }

@@ -7,8 +7,8 @@ import java.util.List;
 
 public class RutubeApiClient extends BaseApiClient implements VideoPlatformClient
 {
-    public RutubeApiClient(Http httpClient, String apiUrl) {
-        super(httpClient, apiUrl);
+    public RutubeApiClient(Http httpClient, String apiUrl, String token) {
+        super(httpClient, apiUrl, token);
     }
 
     @Override
@@ -17,12 +17,12 @@ public class RutubeApiClient extends BaseApiClient implements VideoPlatformClien
     }
 
     @Override
-    public void updateStats(List<String> urls) {
+    public void updateViewsStats(List<String> urls) {
 
     }
 
     @Override
-    public Integer getViewsStats(String token, String apiUrl, String videoLink) {
+    public Integer getViewsStats(String videoUrl) {
         return 0;
     }
 
@@ -33,7 +33,7 @@ public class RutubeApiClient extends BaseApiClient implements VideoPlatformClien
 
 
     @Override
-    public String getToken(String videoLink) {
+    public String getToken() {
         return "";
     }
 }
