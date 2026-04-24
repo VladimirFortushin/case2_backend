@@ -1,0 +1,27 @@
+version: '3.9'
+services:
+  db:
+    image: postgres:16
+    environment:
+      POSTGRES_DB: test
+      POSTGRES_USER: test
+      POSTGRES_PASSWORD: test
+    ports:
+      - "5432:5432"
+    volumes:
+      - ./db/init.sql:/docker-entrypoint-initdb.d/init.sql:ro
+
+  app:
+    build: .
+    depends_on:
+      - db
+    environment:
+      DB_URL: jdbc:postgresql://db:5432/test
+      DB_USERNAME: test
+      DB_PASSWORD: test
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      TELEGRAM_ALLOWED_USER_IDS: ${TELEGRAM_ALLOWED_USER_IDS}
+      YOUTUBE_API_URL: https://www.googleapis.com/youtube/v3/videos
+      YOUTUBE_API_TOKEN: ${YOUTUBE_API_TOKEN}
+      RUTUBE_API_URL: https://rutube.ru/api/video
+      RUTUBE_API_TOKEN: ${RUTUBE_API_TOKEN}
