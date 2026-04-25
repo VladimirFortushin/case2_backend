@@ -18,6 +18,16 @@ public class VimeoApiClient extends BaseApiClient implements VideoPlatformClient
     }
 
     @Override
+    public String parseVideoLinkFromUrl(String url) {
+        return url;
+    }
+
+    @Override
+    public Long getViewsStats(String url) {
+        return -1L;
+    }
+
+    @Override
     public void updateViewsStats(List<String> urls, Map<String, Long> sink) {
         urls.forEach(url -> sink.put(url, -1L));
     }
