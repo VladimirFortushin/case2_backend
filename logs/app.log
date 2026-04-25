@@ -1,0 +1,25 @@
+2026-04-25 16:13:35.231 - [tg_bot_backend] - INFO  - [TEST]: ERROR token is null or blank
+2026-04-25 16:21:44.470 - [tg_bot_backend] - INFO  - [Scheduler] fetching urls...
+2026-04-25 16:21:44.472 - [tg_bot_backend] - INFO  - bot_backend - [SQL]: OUT     SELECT u.id, u.url, p.name AS platform_name
+    FROM urls u
+    JOIN platforms p ON u.platform_id = p.id
+
+2026-04-25 16:21:45.299 - [tg_bot_backend] - INFO  - Failed to connect to DB: jdbc:postgresql://localhost:5432/test
+ВАЖНО: пользователь "test" не прошёл проверку подлинности (по паролю)
+2026-04-25 16:21:45.300 - [tg_bot_backend] - INFO  - [Scheduler] ERROR: org.postgresql.util.PSQLException: ВАЖНО: пользователь "test" не прошёл проверку подлинности (по паролю)
+2026-04-25 16:23:44.272 - [tg_bot_backend] - INFO  - [Scheduler] fetching urls...
+2026-04-25 16:23:44.273 - [tg_bot_backend] - INFO  - bot_backend - [SQL]: OUT     SELECT u.id, u.url, p.name AS platform_name
+    FROM urls u
+    JOIN platforms p ON u.platform_id = p.id
+
+2026-04-25 16:23:44.307 - [tg_bot_backend] - INFO  - Failed to connect to DB: jdbc:postgresql://localhost:5432/test
+ВАЖНО: пользователь "test" не прошёл проверку подлинности (по паролю)
+2026-04-25 16:23:44.307 - [tg_bot_backend] - INFO  - [Scheduler] ERROR: org.postgresql.util.PSQLException: ВАЖНО: пользователь "test" не прошёл проверку подлинности (по паролю)
+2026-04-25 16:25:44.269 - [tg_bot_backend] - INFO  - [Scheduler] fetching urls...
+2026-04-25 16:25:44.271 - [tg_bot_backend] - INFO  - bot_backend - [SQL]: OUT     SELECT u.id, u.url, p.name AS platform_name
+    FROM urls u
+    JOIN platforms p ON u.platform_id = p.id
+
+2026-04-25 16:25:44.300 - [tg_bot_backend] - INFO  - Failed to connect to DB: jdbc:postgresql://localhost:5432/test
+ВАЖНО: пользователь "test" не прошёл проверку подлинности (по паролю)
+2026-04-25 16:25:44.301 - [tg_bot_backend] - INFO  - [Scheduler] ERROR: org.postgresql.util.PSQLException: ВАЖНО: пользователь "test" не прошёл проверку подлинности (по паролю)

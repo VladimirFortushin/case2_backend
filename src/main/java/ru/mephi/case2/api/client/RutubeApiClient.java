@@ -2,11 +2,17 @@ package ru.mephi.case2.api.client;
 
 import ru.mephi.case2.db.entity.Platform;
 import ru.mephi.case2.http.Http;
+import ru.mephi.case2.util.JsonUtil;
 
 import java.util.List;
+import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
-public class RutubeApiClient extends BaseApiClient implements VideoPlatformClient
-{
+public class RutubeApiClient extends BaseApiClient implements VideoPlatformClient {
+
+    private static final Pattern RUTUBE_PATTERN = Pattern.compile("rutube\\.ru/video/([a-zA-Z0-9]+)/?");
+
     public RutubeApiClient(Http httpClient, String apiUrl, String token) {
         super(httpClient, apiUrl, token);
     }
@@ -17,23 +23,27 @@ public class RutubeApiClient extends BaseApiClient implements VideoPlatformClien
     }
 
     @Override
-    public void updateViewsStats(List<String> urls) {
-
+    public void updateViewsStats(List<String> urls, Map<String, Long> sink) {
+        urls.forEach(url -> {
+            try {
+                sink.put(url, getViewsStats(url));
+            } catch (Exception e) {
+                sink.put(url, -1L);
+            }
+        });
     }
 
     @Override
-    public Integer getViewsStats(String videoUrl) {
-        return 0;
+    public Long getViewsStats(String videoUrl) {
+        String videoId = parseVideoLinkFromUrl(videoUrl);
+        String response = httpClient.doGet(apiUrl + "/" + videoId + "/", Map.of(), Map.of());
+        String views = JsonUtil.getFieldValue(response, "hits");
+        return Long.parseLong(views);
     }
 
     @Override
     public String parseVideoLinkFromUrl(String videoUrl) {
-        return "";
-    }
-
-
-    @Override
-    public String getToken() {
-        return "";
+        Matcher m = RUTUBE_PATTERN.matcher(videoUrl);
+        return m.find() ? m.group(1) : "";
     }
 }

@@ -14,7 +14,11 @@ public abstract class BaseApiClient {
         this.token = token;
     }
 
-    public abstract Integer getViewsStats(String videoUrl);
+    public abstract Long getViewsStats(String videoUrl);
+
     public abstract String parseVideoLinkFromUrl(String videoUrl);
-    public abstract String getToken();
+
+    public String getToken() {
+        return token;
+    }
 }
