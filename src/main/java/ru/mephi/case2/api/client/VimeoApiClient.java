@@ -23,6 +23,11 @@ public class VimeoApiClient extends BaseApiClient implements VideoPlatformClient
     }
 
     @Override
+    public void getToken() {
+
+    }
+
+    @Override
     public Long getViewsStats(String url) {
         return -1L;
     }

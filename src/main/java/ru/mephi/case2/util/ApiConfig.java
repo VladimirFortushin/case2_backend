@@ -39,6 +39,18 @@ public class ApiConfig {
         };
     }
 
+    public static String getDbUrl() {
+        return envOrProp("DB_URL", "db.url");
+    }
+
+    public static String getDbUserName() {
+        return envOrProp("DB_USERNAME", "db.username");
+    }
+
+    public static String getDbPassword() {
+        return envOrProp("DB_PASSWORD", "db.password");
+    }
+
     private static String envOrProp(String envName, String propName) {
         String envValue = System.getenv(envName);
         return (envValue != null && !envValue.isBlank()) ? envValue : props.getProperty(propName, "");

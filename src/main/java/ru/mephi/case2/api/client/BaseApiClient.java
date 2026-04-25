@@ -18,7 +18,5 @@ public abstract class BaseApiClient {
 
     public abstract String parseVideoLinkFromUrl(String videoUrl);
 
-    public String getToken() {
-        return token;
-    }
+    public abstract void getToken();
 }

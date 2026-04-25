@@ -50,4 +50,9 @@ public class YouTubeApiClient extends BaseApiClient implements VideoPlatformClie
         Matcher m = YOUTUBE_PATTERN.matcher(videoUrl);
         return m.find() ? m.group(1) : "";
     }
+
+    @Override
+    public void getToken() {
+
+    }
 }
