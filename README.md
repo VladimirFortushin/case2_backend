@@ -5,7 +5,7 @@ Backend MVP для Telegram-бота со сбором статистики пр
 ## Что реализовано
 - Telegram-команды: `/add`, `/list`, `/stats`, `/refresh`.
 - Inline-кнопка `Обновить статистику` с callback-обработчиком.
-- Валидация URL и определение платформы (YouTube, RuTube).
+- Валидация URL и определение платформы (YouTube, RuTube, Vimeo).
 - Сохранение ссылок по пользователю Telegram.
 - Обновление статистики по расписанию и по команде.
 - Возврат последних успешных просмотров при недоступности источника.
@@ -17,6 +17,7 @@ Backend MVP для Telegram-бота со сбором статистики пр
 - `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`.
 - `YOUTUBE_API_TOKEN`.
 - `RUTUBE_API_URL` (по умолчанию `https://rutube.ru/api/video`).
+- `VIMEO_API_TOKEN`.
 
 ## Запуск через Docker
 ```bash
