@@ -1,4 +1,4 @@
-# case2_backend
+# bot_backend
 
 Backend для Telegram-бота со сбором статистики просмотров видео.
 
