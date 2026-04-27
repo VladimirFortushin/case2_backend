@@ -1,0 +1,48 @@
+services:
+  # 1. Сервис Базы Данных
+  db:
+    image: postgres:14-alpine
+    container_name: hakaton-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./schema.sql:/docker-entrypoint-initdb.d/schema.sql
+    ports:
+      - "5433:5432"
+
+  # 2. Сервис Бэкенда
+  backend:
+    build: ./backend
+    container_name: hakaton-backend
+    depends_on:
+      - db
+    environment:
+      DB_URL: jdbc:postgresql://${DB_SERVICE}:${DB_PORT}/${POSTGRES_DB}
+      DB_USERNAME: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      YOUTUBE_API_URL: ${YOUTUBE_API_URL}
+      RUTUBE_API_URL: ${RUTUBE_API_URL}
+      VIMEO_API_URL: ${VIMEO_API_URL}
+      YOUTUBE_API_TOKEN: ${YOUTUBE_API_TOKEN}
+      RUTUBE_API_TOKEN: ${RUTUBE_API_TOKEN}
+      VIMEO_API_TOKEN: ${VIMEO_API_TOKEN}
+
+  # 3. Сервис Телеграм-бота
+  bot:
+    build: ./bot
+    container_name: hakaton-bot
+    depends_on:
+      - db
+      - backend
+    environment:
+      DB_HOST: db
+      DB_NAME: ${POSTGRES_DB}
+      DB_USER: ${POSTGRES_USER}
+      DB_PASSWORD: ${POSTGRES_PASSWORD}
+      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+
+volumes:
+  postgres_data:
