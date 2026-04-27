@@ -16,4 +16,5 @@ Backend для Telegram-бота со сбором статистики прос
 - `YOUTUBE_API_TOKEN` - токен api youtube
 - `RUTUBE_API_TOKEN` - токен api rutube
 - `VIMEO_API_TOKEN` - токен api vimeo
-- `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`.
+- `DB_URL`, `DB_USERNAME`, `DB_PASSWORD`
+- `DB_SERVICE` - имя сервиса БД в compose.yml
