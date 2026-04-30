@@ -45,11 +45,14 @@ services:
       db:
         condition: service_healthy    # ожидание старта db
     environment:
-      DB_HOST: db
-      DB_NAME: ${POSTGRES_DB}
-      DB_USER: ${POSTGRES_USER}
-      DB_PASSWORD: ${POSTGRES_PASSWORD}
-      TELEGRAM_BOT_TOKEN: ${TELEGRAM_BOT_TOKEN}
+      DATABASE_HOST: db
+      POSTGRES_DB: ${POSTGRES_DB}
+      POSTGRES_USER: ${POSTGRES_USER}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      BOT_TOKEN: ${BOT_TOKEN}
+      BOT_LOG_FILE: /app_logs/bot_log
+    volumes:
+      - ./:/app_logs
 
 volumes:
   postgres_data:
