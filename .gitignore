@@ -39,3 +39,5 @@ build/
 .DS_Store
 
 .env
+bot_log
+__pycache__/
