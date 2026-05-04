@@ -3,6 +3,7 @@ package ru.mephi.case2.api.client;
 import ru.mephi.case2.api.ApiUpdateListener;
 import ru.mephi.case2.db.entity.Platform;
 import ru.mephi.case2.http.Http;
+import ru.mephi.case2.log.BackendLogger;
 import ru.mephi.case2.util.JsonUtil;
 
 import java.util.List;
@@ -14,6 +15,7 @@ public class VimeoApiClient extends BaseApiClient implements VideoPlatformClient
 {
 
 
+    private final String vimeoLogAppender = "[API-CLIENT-VIMEO]: ";
     public VimeoApiClient(Http httpClient, String apiUrl, String token) {
         super(httpClient, apiUrl, token);
     }
@@ -28,22 +30,31 @@ public class VimeoApiClient extends BaseApiClient implements VideoPlatformClient
 
     @Override
     public Long getViewsStats(String videoUrl) {
-        String videoId = parseVideoLinkFromUrl(videoUrl);
-
-        String response = httpClient.doGet(
-                apiUrl + "/" + videoId,
-                Map.of("Authorization", "Bearer " + token),
-                Map.of()
-        );
-
-        String views = JsonUtil.getFieldValue(response, "plays");
-
-        if (views == null || views.isBlank()) {
+        String videoLink = parseVideoLinkFromUrl(videoUrl);
+        if (videoLink == null || videoLink.isBlank()) {
+            BackendLogger.log(vimeoLogAppender + "can't parse video link from URL: " + videoUrl);
             return -1L;
         }
-
-        return Long.parseLong(views);
+        return getVideoStats(videoLink);
     }
+
+    private Long getVideoStats(String videoId) {
+        try {
+            String response = httpClient.doGet(
+                    apiUrl + "/" + videoId,
+                    Map.of("Authorization", "Bearer " + token),
+                    Map.of());
+            String views = JsonUtil.getFieldValue(response, "plays");
+            if (views.equals("null") || views.isBlank()) {
+                return 0L;
+            }
+            return Long.parseLong(views);
+        } catch (Exception e) {
+            BackendLogger.log(vimeoLogAppender + "error: " + e.getMessage());
+            return 0L;
+        }
+    }
+
 
     @Override
     public String parseVideoLinkFromUrl(String videoUrl) {
@@ -53,4 +64,9 @@ public class VimeoApiClient extends BaseApiClient implements VideoPlatformClient
 
     @Override
     public void updateApiToken() {}
+
+    @Override
+    public String getLogAppend() {
+        return vimeoLogAppender;
+    }
 }

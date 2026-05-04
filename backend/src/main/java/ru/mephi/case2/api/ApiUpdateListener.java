@@ -5,6 +5,7 @@ import ru.mephi.case2.api.client.VideoPlatformClient;
 import ru.mephi.case2.db.DbVideoRepository;
 import ru.mephi.case2.db.entity.Platform;
 import ru.mephi.case2.db.entity.UrlInfo;
+import ru.mephi.case2.log.BackendLogger;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -41,7 +42,11 @@ public class ApiUpdateListener {
         platformUrlMap.forEach((platform, urls) -> {
             VideoPlatformClient client = registry.get(platform);
             if (client != null) {
-                client.updateViewsStats(urls);
+                try {
+                    client.updateViewsStats(urls);
+                } catch (Exception e) {
+                    BackendLogger.log("Error updating stats for platform " + platform + ": " + e.getMessage());
+                }
             }
         });
 

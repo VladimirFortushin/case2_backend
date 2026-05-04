@@ -22,33 +22,29 @@ public class Main {
         //создание апи клиентов
         Http httpClient = HttpApiClient.getInstance();
 
-        String ytApiUrl = ApiConfig.getApiUrl(Platform.YOUTUBE);
-        String ytToken = ApiConfig.getApiToken(Platform.YOUTUBE);
-        VideoPlatformClient youTubeApiClient = new YouTubeApiClient(httpClient, ytApiUrl, ytToken);
+        VideoPlatformClient youTubeApiClient = new YouTubeApiClient(httpClient, ApiConfig.getApiUrl(Platform.YOUTUBE),
+                ApiConfig.getApiToken(Platform.YOUTUBE));
 
-        String rtApiUrl = ApiConfig.getApiUrl(Platform.RUTUBE);
-        String rtToken = ApiConfig.getApiToken(Platform.RUTUBE);
-        VideoPlatformClient ruTubeApiClient = new RutubeApiClient(httpClient, rtApiUrl, rtToken);
+        VideoPlatformClient ruTubeApiClient = new RutubeApiClient(httpClient, ApiConfig.getApiUrl(Platform.RUTUBE),
+                ApiConfig.getApiToken(Platform.RUTUBE));
 
-        String vimApiUrl = ApiConfig.getApiUrl(Platform.VIMEO);
-        String vimToken = ApiConfig.getApiToken(Platform.VIMEO);
-        VideoPlatformClient vimeoApiClient = new VimeoApiClient(httpClient, vimApiUrl, vimToken);
+        VideoPlatformClient vimeoApiClient = new VimeoApiClient(httpClient, ApiConfig.getApiUrl(Platform.VIMEO),
+                ApiConfig.getApiToken(Platform.VIMEO));
+
         // регистрация и запуск расписания запроса урлов
         DbQueryScheduler scheduler = getDbQueryScheduler(youTubeApiClient, ruTubeApiClient, vimeoApiClient);
 
         scheduler.start();
     }
 
-    private static DbQueryScheduler getDbQueryScheduler(VideoPlatformClient youTubeApiClient, VideoPlatformClient ruTubeApiClient, VideoPlatformClient vimeoApiClient) {
-        List<VideoPlatformClient> clients = Arrays.asList(youTubeApiClient, ruTubeApiClient, vimeoApiClient);
+    private static DbQueryScheduler getDbQueryScheduler(VideoPlatformClient... videoPlatformClients) {
+        List<VideoPlatformClient> clients = Arrays.asList(videoPlatformClients);
         // регистрация апи клиентов
         ApiClientRegistry registry = new ApiClientRegistry(clients);
         // репо, достающий из БД урлы видео
         DbVideoRepository repository = new DbVideoRepository();
         // инициализация слушателя
         ApiUpdateListener listener = new ApiUpdateListener(registry, repository);
-
-
         return new DbQueryScheduler(repository, listener);
     }
 }

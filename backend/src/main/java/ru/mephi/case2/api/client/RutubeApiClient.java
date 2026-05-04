@@ -2,6 +2,7 @@ package ru.mephi.case2.api.client;
 
 import ru.mephi.case2.db.entity.Platform;
 import ru.mephi.case2.http.Http;
+import ru.mephi.case2.log.BackendLogger;
 import ru.mephi.case2.util.JsonUtil;
 
 import java.util.List;
@@ -14,7 +15,7 @@ public class RutubeApiClient extends BaseApiClient implements VideoPlatformClien
     public RutubeApiClient(Http httpClient, String apiUrl, String token) {
         super(httpClient, apiUrl, token);
     }
-
+    private final String ruTubeLogAppender = "[API-CLIENT-RUTUBE]: ";
     private static final Pattern RUTUBE_PATTERN = Pattern.compile("rutube\\.ru/video/([a-zA-Z0-9]+)/?");
 
 
@@ -26,9 +27,23 @@ public class RutubeApiClient extends BaseApiClient implements VideoPlatformClien
     @Override
     public Long getViewsStats(String videoUrl) {
         String videoId = parseVideoLinkFromUrl(videoUrl);
-        String response = httpClient.doGet(apiUrl + "/" + videoId + "/", Map.of(), Map.of());
-        String views = JsonUtil.getFieldValue(response, "hits");
-        return Long.parseLong(views);
+        if (videoId == null || videoId.isBlank()) {
+            BackendLogger.log(ruTubeLogAppender + "can't parse video link from URL: " + videoUrl);
+            return -1L;
+        }
+        return  getVideoStats(videoId);
+    }
+
+    private Long getVideoStats(String videoId) {
+        try {
+            String response = httpClient.doGet(apiUrl + "/" + videoId + "/", Map.of(), Map.of());
+            String views = JsonUtil.getFieldValue(response, "hits");
+            if (views == null || views.isBlank() || views.equals("null")) return -1L;
+            return Long.parseLong(views);
+        } catch (Exception e) {
+            BackendLogger.log(ruTubeLogAppender + "error: " + e.getMessage());
+            return 0L;
+        }
     }
 
     @Override
@@ -40,4 +55,9 @@ public class RutubeApiClient extends BaseApiClient implements VideoPlatformClien
 
     @Override
     public void updateApiToken() {}
+
+    @Override
+    public String getLogAppend() {
+        return ruTubeLogAppender;
+    }
 }

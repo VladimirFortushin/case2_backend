@@ -1,14 +1,12 @@
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import ru.mephi.case2.api.client.YouTubeApiClient;
 import ru.mephi.case2.db.entity.Platform;
 import ru.mephi.case2.http.HttpApiClient;
 import ru.mephi.case2.log.BackendLogger;
 import ru.mephi.case2.util.ApiConfig;
 
-import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class YouTubeApiClientIntegrationTest {

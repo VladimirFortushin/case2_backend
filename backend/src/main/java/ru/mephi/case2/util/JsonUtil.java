@@ -21,6 +21,7 @@ public class JsonUtil {
         try{
             return gson.fromJson(json, cls);
         }catch (JsonSyntaxException e){
+            e.printStackTrace();
             BackendLogger.log(jsonParserErr + "Couldn't parse json into class " + cls.getName() + "\n" + json);
         }
         return null;

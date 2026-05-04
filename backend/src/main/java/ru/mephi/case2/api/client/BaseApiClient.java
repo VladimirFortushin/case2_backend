@@ -2,6 +2,7 @@ package ru.mephi.case2.api.client;
 
 import ru.mephi.case2.api.ApiUpdateListener;
 import ru.mephi.case2.http.Http;
+import ru.mephi.case2.log.BackendLogger;
 
 import java.util.List;
 
@@ -23,7 +24,12 @@ public abstract class BaseApiClient {
     public void updateViewsStats(List<String> urls) {
         urls.forEach(url -> {
             Long viewsCount = getViewsStats(url);
-            ApiUpdateListener.getUrlViewsMap().put(url, viewsCount);
+            if(viewsCount < 0) {
+                BackendLogger.log(getLogAppend() + "failed to retrieve views stats for " + url);
+            }else{
+                ApiUpdateListener.getUrlViewsMap().put(url, viewsCount);
+            }
         });
     }
+    public abstract String getLogAppend();
 }

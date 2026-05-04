@@ -24,6 +24,7 @@ public class VimeoApiClientIntegrationTest {
         assumeTrue(token != null && !token.isBlank(), "Token is not set");
 
         String videoUrl = "https://vimeo.com/76979871";
+
         Long views = client.getViewsStats(videoUrl);
 
         assertTrue(views != null && views > 0,
