@@ -128,7 +128,7 @@ async def process_name(message: types.Message, state: FSMContext):
     url = message.text.replace(' ', '') #убираем пробелы в ссылке
 
     # Проверяем, подходит ли нам url по формату
-    if "https://youtu.be" in url or "https://youtube.com" in url or "https://www.youtube.com":
+    if "https://youtu.be" in url or "https://youtube.com" in url or "https://www.youtube.com" in url:
         is_url_correct = True
         platform = 'youtube'
     elif "https://vimeo.com" in url:

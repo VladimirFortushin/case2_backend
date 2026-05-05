@@ -12,7 +12,7 @@
     *   **Схема:** Структура базы данных описана в файле `schema.sql`.
 
 2.  **Бэкенд-сервис (`backend`)**
-    *   **Технология:** Java (без использования Spring).
+    *   **Технология:** java 17, java.net.http, java.sql (без использования Spring).
     *   **Роль:** Основной обработчик данных. Это фоновый сервис, который периодически (каждые 2 минуты) выполняет следующие действия:
         1.  Запрашивает из базы данных список всех добавленных URL.
         2.  Обращается к API соответствующей видео-платформы (YouTube, RuTube, Vimeo) для получения актуального количества просмотров.
@@ -40,50 +40,37 @@
 
 **1. Подготовка конфигурационного файла**
 
-Создайте файл `.env` в корневой директории проекта, скопировав содержимое из ` .env.example`:
+Откройте файл `.env` и проверьте переменные
 
-```bash
-cp .env.example .env
+**2. Сборка и запуск контейнеров производятся командой ./run.sh**
+
+Содержимое run.sh:
+
+```
+#!/bin/bash
+set -e
+
+docker compose down
+
+docker compose up -d --build
+
+docker ps --filter "name=hakaton-"
 ```
 
-Откройте файл `.env` и заполните его необходимыми значениями:
+Он соберет образы для бэкенда и бота, запустит все три контейнера "hakaton-..." в фоновом режиме и применит схему schema.sql базы данных.
 
-```dotenv
-# Конфигурация базы данных
-POSTGRES_DB=your_db_name
-POSTGRES_USER=your_db_user
-POSTGRES_PASSWORD=your_db_password
-DB_SERVICE=db
-DB_PORT=5432
+**3. Остановка и полная очистка содержимого контейнеров скриптом ./stop.sh**
 
-# Токены API
-BOT_TOKEN=your_telegram_bot_token # Токен вашего телеграм-бота
-YOUTUBE_API_TOKEN=your_youtube_api_token # Токен для YouTube Data API v3
-RUTUBE_API_TOKEN=your_rutube_api_token
-VIMEO_API_TOKEN=your_vimeo_api_token
+Содержимое stop.sh:
 
-# URL для API (обычно не требуют изменений)
-YOUTUBE_API_URL=https://www.googleapis.com/youtube/v3/videos
-RUTUBE_API_URL=https://rutube.ru/api/video/
-VIMEO_API_URL=https://api.vimeo.com/videos
 ```
+#!/bin/bash
+set -e
 
-**2. Сборка и запуск контейнеров**
-
-Для запуска всего стека приложений выполните следующую команду из корневой директории проекта:
-
-```bash
-docker-compose up --build -d
+# очистка video_stats, urls, users_urls и перезапуск инкремента id
+#docker exec -i hakaton-db psql -U hakaton_user -d hakaton_db -c "TRUNCATE video_stats, urls, users_urls RESTART IDENTITY CASCADE;"
+docker compose down -v
 ```
-
-Эта команда соберет образы для бэкенда и бота, запустит все три контейнера в фоновом режиме и применит схему базы данных.
-
-**3. Проверка статуса**
-
-Вы можете проверить статус запущенных контейнеров командой:
-
-```bash
-docker-compose ps
 ```
 
 ## Использование телеграм-бота

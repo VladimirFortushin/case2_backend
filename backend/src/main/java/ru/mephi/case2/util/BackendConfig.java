@@ -4,14 +4,16 @@ import ru.mephi.case2.db.entity.Platform;
 import ru.mephi.case2.log.BackendLogger;
 
 import java.io.InputStream;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Properties;
 
-public class ApiConfig {
+public class BackendConfig {
 
     private static final Properties props = new Properties();
 
     static {
-        try (InputStream is = ApiConfig.class
+        try (InputStream is = BackendConfig.class
                 .getClassLoader()
                 .getResourceAsStream("application.properties")) {
             if (is != null) {
@@ -53,8 +55,47 @@ public class ApiConfig {
         return envOrProp("DB_PASSWORD", "db.password");
     }
 
+    public static int getStatsUpdateFrequency(){
+        int delaySec = 0;
+        try{
+            delaySec = Integer.parseInt(envOrProp("STATS_UPDATE_DELAY_SEC", "stats.update.delay"));
+        }catch (Exception ignored){
+
+        }
+        return delaySec == 0 ? 60 : delaySec;
+    }
+
     private static String envOrProp(String envName, String propName) {
         String envValue = System.getenv(envName);
         return (envValue != null && !envValue.isBlank()) ? envValue : props.getProperty(propName, "");
+    }
+
+    public static void validateParams() {
+        List<String> missing = new ArrayList<>();
+
+        checkNotEmpty("DB_URL", getDbUrl(), missing);
+        checkNotEmpty("DB_USERNAME", getDbUserName(), missing);
+        checkNotEmpty("DB_PASSWORD", getDbPassword(), missing);
+
+        checkNotEmpty("YOUTUBE_API_TOKEN", getApiToken(Platform.YOUTUBE), missing);
+        checkNotEmpty("YOUTUBE_API_URL", getApiUrl(Platform.YOUTUBE), missing);
+
+//         checkNotEmpty("RUTUBE_API_TOKEN", getApiToken(Platform.RUTUBE), missing);
+         checkNotEmpty("RUTUBE_API_URL", getApiUrl(Platform.RUTUBE), missing);
+
+         checkNotEmpty("VIMEO_API_TOKEN", getApiToken(Platform.VIMEO), missing);
+         checkNotEmpty("VIMEO_API_URL", getApiUrl(Platform.VIMEO), missing);
+
+        if (!missing.isEmpty()) {
+            String message = "Missing required configuration parameters:\n" + String.join("\n", missing);
+            BackendLogger.log("FATAL: " + message);
+            throw new IllegalStateException(message);
+        }
+    }
+
+    private static void checkNotEmpty(String name, String value, List<String> missing) {
+        if (value == null || value.isBlank()) {
+            missing.add("  - " + name + " (env: " + name + " or property in application.properties)");
+        }
     }
 }

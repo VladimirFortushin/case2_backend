@@ -1,3 +1,3 @@
 FROM eclipse-temurin:17-jre-alpine
-COPY bot_backend.jar app.jar
-ENTRYPOINT ["java", "-jar", "/app.jar"]
+COPY bot_backend.jar bot_backend.jar
+ENTRYPOINT ["java", "-jar", "/bot_backend.jar"]

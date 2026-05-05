@@ -43,7 +43,6 @@ CREATE TABLE IF NOT EXISTS video_stats (
 );
 
 INSERT INTO platforms (name) VALUES ('youtube') ON CONFLICT (name) DO NOTHING;
-INSERT INTO platforms (name) VALUES ('vk') ON CONFLICT (name) DO NOTHING;
 INSERT INTO platforms (name) VALUES ('rutube') ON CONFLICT (name) DO NOTHING;
-INSERT INTO platforms (name) VALUES ('dzen') ON CONFLICT (name) DO NOTHING;
 INSERT INTO platforms (name) VALUES ('vimeo') ON CONFLICT (name) DO NOTHING;
+

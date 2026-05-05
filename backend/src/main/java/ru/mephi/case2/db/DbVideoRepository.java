@@ -7,6 +7,7 @@ import ru.mephi.case2.log.BackendLogger;
 
 import java.sql.*;
 import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -66,7 +67,7 @@ public class DbVideoRepository implements VideoRepository {
                 stmt.setLong(1, urlId);
                 stmt.setLong(2, success ? views : 0);
                 stmt.setBoolean(3, success);
-                stmt.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now()));
+                stmt.setTimestamp(4, Timestamp.valueOf(LocalDateTime.now().truncatedTo(ChronoUnit.SECONDS)));
                 stmt.addBatch();
                 inserted++;
             }

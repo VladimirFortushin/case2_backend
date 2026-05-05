@@ -1,4 +1,4 @@
-package ru.mephi.case2.scheduler;
+package ru.mephi.case2.db.scheduler;
 
 import ru.mephi.case2.api.ApiUpdateListener;
 import ru.mephi.case2.db.DbVideoRepository;

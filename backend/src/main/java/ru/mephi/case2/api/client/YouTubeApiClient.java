@@ -1,13 +1,11 @@
 package ru.mephi.case2.api.client;
 
-import ru.mephi.case2.api.ApiUpdateListener;
 import ru.mephi.case2.db.entity.Platform;
 import ru.mephi.case2.http.Http;
 import ru.mephi.case2.log.BackendLogger;
 import ru.mephi.case2.util.JsonUtil;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

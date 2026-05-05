@@ -2,47 +2,28 @@
 <Configuration status="WARN" shutdownHook="disable">
     <Properties>
         <Property name="logPattern">%d{yyyy-MM-dd HH:mm:ss.SSS} - [tg_bot_backend] - %-5level - %msg%n</Property>
-        <Property name="logPath">logs</Property>
+        <Property name="logFile">/app_data/bot_backend_log</Property>
     </Properties>
 
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="${logPattern}" charset="UTF-8"/>
         </Console>
-        <RollingRandomAccessFile name="File"
-                                 fileName="${logPath}/app.log"
-                                 filePattern="${logPath}/app-%i.log.gz"
-                                 immediateFlush="false"
-                                 bufferSize="8192">
 
+        <File name="File" fileName="${logFile}" append="true" bufferedIO="false">
             <PatternLayout pattern="${logPattern}" charset="UTF-8"/>
-
-            <Policies>
-                <SizeBasedTriggeringPolicy size="100 MB"/>
-            </Policies>
-
-            <DefaultRolloverStrategy max="10">
-                <Delete basePath="${logPath}" maxDepth="1">
-                    <IfFileName glob="app-*.log.gz"/>
-                    <IfAccumulatedFileCount exceeds="10"/>
-                </Delete>
-            </DefaultRolloverStrategy>
-        </RollingRandomAccessFile>
-
-        <Async name="AsyncFile" bufferSize="262144" includeLocation="false">
-            <AppenderRef ref="File"/>
-        </Async>
+        </File>
     </Appenders>
 
     <Loggers>
         <Logger name="ru.mephi.case2.log.BackendLogger" level="info" additivity="false">
             <AppenderRef ref="Console"/>
-            <AppenderRef ref="AsyncFile"/>
+            <AppenderRef ref="File"/>
         </Logger>
 
         <Root level="info">
             <AppenderRef ref="Console"/>
-            <AppenderRef ref="AsyncFile"/>
+            <AppenderRef ref="File"/>
         </Root>
     </Loggers>
 </Configuration>

@@ -36,6 +36,10 @@ services:
       YOUTUBE_API_TOKEN: ${YOUTUBE_API_TOKEN}
       RUTUBE_API_TOKEN: ${RUTUBE_API_TOKEN}
       VIMEO_API_TOKEN: ${VIMEO_API_TOKEN}
+      STATS_UPDATE_DELAY_SEC: ${STATS_UPDATE_DELAY_SEC}
+      TZ: "Europe/Moscow"
+    volumes:
+      - ./:/app_data
 
   # 3. Сервис Телеграм-бота
   bot:

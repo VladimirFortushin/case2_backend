@@ -5,7 +5,7 @@ import ru.mephi.case2.api.client.YouTubeApiClient;
 import ru.mephi.case2.db.entity.Platform;
 import ru.mephi.case2.http.HttpApiClient;
 import ru.mephi.case2.log.BackendLogger;
-import ru.mephi.case2.util.ApiConfig;
+import ru.mephi.case2.util.BackendConfig;
 
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
@@ -14,8 +14,8 @@ public class YouTubeApiClientIntegrationTest {
     private HttpApiClient httpApiClient;
 
     private  YouTubeApiClient youTubeApiClient;
-    private final String apiUrl =  ApiConfig.getApiUrl(Platform.YOUTUBE);
-    private final String token = ApiConfig.getApiToken(Platform.YOUTUBE);
+    private final String apiUrl =  BackendConfig.getApiUrl(Platform.YOUTUBE);
+    private final String token = BackendConfig.getApiToken(Platform.YOUTUBE);
     private final String testErr = "[TEST]: ERROR ";
     private final String testSuccess = "[TEST]: SUCCESS ";
     @BeforeEach
