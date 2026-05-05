@@ -5,6 +5,7 @@ import ru.mephi.case2.db.DbVideoRepository;
 import ru.mephi.case2.db.entity.Platform;
 import ru.mephi.case2.db.entity.UrlInfo;
 import ru.mephi.case2.log.BackendLogger;
+import ru.mephi.case2.util.BackendConfig;
 
 import java.util.List;
 import java.util.Map;
@@ -39,6 +40,6 @@ public class DbQueryScheduler {
             } catch (Exception e) {
                 BackendLogger.log("[Scheduler] ERROR: " + e.getMessage());
             }
-        }, 0, 2, TimeUnit.MINUTES);
+        }, 0, BackendConfig.getStatsUpdateFrequency(), TimeUnit.SECONDS);
     }
 }
