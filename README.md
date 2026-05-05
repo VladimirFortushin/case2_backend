@@ -71,6 +71,8 @@ set -e
 #docker exec -i hakaton-db psql -U hakaton_user -d hakaton_db -c "TRUNCATE video_stats, urls, users_urls RESTART IDENTITY CASCADE;"
 docker compose down -v
 ```
+Бот и бэкенд после запуска пишут логи соответственно в файлы: bot_log, bot_backend_log в текущей директории
+
 ```
 
 ## Использование телеграм-бота
